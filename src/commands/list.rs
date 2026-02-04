@@ -43,9 +43,10 @@ fn list_dir(dir: &Path) {
         }
     };
 
-    // 收集并排序项目名称
+    // 收集并排序项目名称（只收集目录，忽略文件）
     let mut projects: Vec<_> = entries
-        .flatten()  // 过滤掉读取失败的条目
+        .flatten()
+        .filter(|e| e.path().is_dir())  // 只保留目录
         .map(|e| e.file_name().to_string_lossy().into_owned())
         .collect();
 

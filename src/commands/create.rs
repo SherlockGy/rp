@@ -20,8 +20,14 @@ use crate::config::{get_next_index, get_project_type_dir, ProjectType};
 /// 1. 确定目标目录（temp 或 keep）
 /// 2. 生成项目名称（自动编号或使用用户指定名称）
 /// 3. 调用 cargo new 创建项目
-/// 4. 启动 VS Code 并定位到 main.rs
+/// 4. 输出编辑器打开命令
 pub fn create_project(name: Option<String>, keep: bool, git: bool) {
+    // 正式项目必须指定名称
+    if keep && name.is_none() {
+        eprintln!("错误: 正式项目必须指定名称");
+        eprintln!("用法: rp -k <项目名称>");
+        return;
+    }
     // 根据 keep 参数决定项目类型
     let project_type = if keep {
         ProjectType::Keep
