@@ -48,8 +48,8 @@ pub fn create_project(name: Option<String>, keep: bool, git: bool) {
 
     println!("✓ 项目已创建: {}", project_path.display());
 
-    // 打开 VS Code
-    open_vscode(&project_path);
+    // 打印编辑器打开命令
+    print_editor_commands(&project_path);
 }
 
 /// 生成项目名称
@@ -113,29 +113,15 @@ fn run_cargo_new(project_path: &std::path::Path, git: bool) -> bool {
     true
 }
 
-/// 打开 VS Code 并定位到 main.rs
+/// 打印编辑器打开命令
 ///
-/// # 参数
-/// - `project_path`: 项目根目录路径
-fn open_vscode(project_path: &std::path::Path) {
+/// 输出 VS Code 和 RustRover 的完整打开命令，用户可复制执行。
+/// --goto 参数让 VS Code 打开时定位到 main.rs 第一行。
+pub fn print_editor_commands(project_path: &std::path::Path) {
     let main_rs = project_path.join("src").join("main.rs");
+    let project_str = project_path.display();
 
-    // 使用 --goto 参数直接定位到文件第一行
-    let result = Command::new("code")
-        .args([
-            project_path.to_string_lossy().as_ref(),
-            "--goto",
-            &format!("{}:1", main_rs.display()),
-        ])
-        .status();
-
-    match result {
-        Ok(status) if status.success() => {
-            println!("✓ VS Code 已打开");
-        }
-        _ => {
-            // VS Code 未安装或不在 PATH 中
-            println!("提示: 无法自动打开 VS Code，请手动打开项目目录");
-        }
-    }
+    println!("\n打开项目:");
+    println!("  VS Code   : code \"{}\" --goto \"{}:1\"", project_str, main_rs.display());
+    println!("  RustRover : rustrover \"{}\"", project_str);
 }

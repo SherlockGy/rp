@@ -3,16 +3,19 @@
 //! 快速创建 Rust 练习项目的命令行工具。
 //!
 //! ## 功能特点
-//! - 一键创建项目并打开 VS Code
+//! - 一键创建项目，输出编辑器打开命令
 //! - 支持临时练习和正式项目两种模式
 //! - 自动编号，便于管理
 //! - 可批量清理临时练习
+//! - 可打开已有项目
 //!
 //! ## 使用示例
 //! ```bash
 //! rp              # 创建临时练习
 //! rp hello        # 创建名为 hello 的临时练习
 //! rp -k project   # 创建正式项目
+//! rp -o           # 打开已有项目
+//! rp -o test      # 打开名称含 test 的项目
 //! rp -l           # 列出所有项目
 //! rp -c           # 清理临时练习
 //! ```
@@ -24,7 +27,7 @@ mod commands;
 use clap::Parser;
 
 use cli::Cli;
-use commands::{clean_temp, create_project, list_projects};
+use commands::{clean_temp, create_project, list_projects, open_project};
 
 /// 程序入口
 ///
@@ -34,11 +37,13 @@ fn main() {
     let cli = Cli::parse();
 
     // 根据参数执行对应命令
-    // 优先级：list > clean > create（默认）
+    // 优先级：list > clean > open > create（默认）
     if cli.list {
         list_projects();
     } else if cli.clean {
         clean_temp();
+    } else if cli.open {
+        open_project(cli.name);
     } else {
         create_project(cli.name, cli.keep, cli.git);
     }

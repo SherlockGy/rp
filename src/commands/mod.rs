@@ -6,8 +6,10 @@
 pub mod create;
 pub mod list;
 pub mod clean;
+pub mod open;
 
 // 重新导出，方便外部使用
 pub use create::create_project;
 pub use list::list_projects;
 pub use clean::clean_temp;
+pub use open::open_project;

@@ -52,4 +52,11 @@ pub struct Cli {
     /// 添加此选项后会调用 git init。
     #[arg(short, long)]
     pub git: bool,
+
+    /// 打开已有项目
+    ///
+    /// 显示项目列表供选择，输出编辑器打开命令。
+    /// 支持模糊搜索项目名称。
+    #[arg(short, long)]
+    pub open: bool,
 }
