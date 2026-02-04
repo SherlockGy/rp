@@ -1,0 +1,19 @@
+[package]
+name = "rp"
+version = "0.1.0"
+edition = "2024"
+description = "Rust Playground - 快速创建练习项目的工具"
+readme = "README.md"
+license = "MIT"
+keywords = ["rust", "playground", "learning", "cli"]
+categories = ["command-line-utilities", "development-tools"]
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+chrono = "0.4"
+dirs = "5"
+
+[profile.release]
+# 优化二进制大小
+strip = true
+lto = true
